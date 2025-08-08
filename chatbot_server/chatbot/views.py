@@ -9,7 +9,8 @@ from django.views.decorators.csrf import csrf_exempt
 from . google.init import google_api
 import json
 
-ai_client = google_api.client
+ai_client = google_api()
+
 
 
 @csrf_exempt
@@ -21,11 +22,11 @@ def chatbot_response(request):
         messages = [
             {"role": "user", "content": user_message},
         ]
-        chat_completion = google_api_client.getResponse((
-            messages=messages,
-            model="gpt-3.5-turbo",
+        chat_completion = ai_client.getResponse(
+            queryText= user_message,
         )
-        bot_response = chat_completion.choices[0].message.content
+        #bot_response = chat_completion.choices[0].message.content
+        bot_response = chat_completion
 
         return JsonResponse({'message': bot_response})
     else:
